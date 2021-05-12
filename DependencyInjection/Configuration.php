@@ -27,8 +27,13 @@ class Configuration implements ConfigurationInterface
     {
         $supportedDrivers = array('orm', 'mongodb');
 
-        $treeBuilder = new TreeBuilder('database');
-        $rootNode = $treeBuilder->getRootNode();
+        $builder = new TreeBuilder('pix_sortable_behavior');
+        if (\method_exists($builder, 'getRootNode')) {
+            $rootNode = $builder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $builder->root('pix_sortable_behavior');
+        }
 
         $rootNode
             ->children()
